@@ -1,9 +1,11 @@
+using System;
+using UnityEngine.Experimental.Rendering;
 using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.Rendering.Universal.Internal;
 
 namespace UnityEngine.Rendering.Universal
 {
-    internal class Renderer2D : ScriptableRenderer
+    public class Renderer2D : ScriptableRenderer
     {
         #if UNITY_SWITCH
         internal const int k_DepthBufferBits = 24;
@@ -133,18 +135,37 @@ namespace UnityEngine.Rendering.Universal
             else    // Overlay camera
             {
                 cameraData.baseCamera.TryGetComponent<UniversalAdditionalCameraData>(out var baseCameraData);
-                var baseRenderer = (Renderer2D)baseCameraData.scriptableRenderer;
+                if (baseCameraData.scriptableRenderer.GetType() == typeof(Renderer2D))
+                {
+                    var baseRenderer = (Renderer2D)baseCameraData.scriptableRenderer;
 
-                // These render textures are created by the base camera, but it's the responsibility of the last overlay camera's ScriptableRenderer
-                // to release the textures in its FinishRendering().
-                m_CreateColorTexture = true;
-                m_CreateDepthTexture = true;
+                    // These render textures are created by the base camera, but it's the responsibility of the last overlay camera's ScriptableRenderer
+                    // to release the textures in its FinishRendering().
+                    m_CreateColorTexture = true;
+                    m_CreateDepthTexture = true;
 
-                m_ColorTextureHandle = baseRenderer.m_ColorTextureHandle;
-                m_DepthTextureHandle = baseRenderer.m_DepthTextureHandle;
+                    m_ColorTextureHandle = baseRenderer.m_ColorTextureHandle;
+                    m_DepthTextureHandle = baseRenderer.m_DepthTextureHandle;
 
-                colorTargetHandle = m_ColorTextureHandle;
-                depthTargetHandle = m_DepthTextureHandle;
+                    colorTargetHandle = m_ColorTextureHandle;
+                    depthTargetHandle = m_DepthTextureHandle;
+                    
+                }
+                else
+                {
+                    var baseRenderer = (UniversalRenderer)baseCameraData.scriptableRenderer;
+
+                    // These render textures are created by the base camera, but it's the responsibility of the last overlay camera's ScriptableRenderer
+                    // to release the textures in its FinishRendering().
+                    m_CreateColorTexture = true;
+                    m_CreateDepthTexture = true;
+
+                    m_ColorTextureHandle = baseRenderer.m_ActiveCameraColorAttachment;
+                    m_DepthTextureHandle = baseRenderer.m_ActiveCameraDepthAttachment;
+                    
+                    colorTargetHandle = m_ColorTextureHandle;
+                    depthTargetHandle = m_DepthTextureHandle;
+                }
             }
         }
 
