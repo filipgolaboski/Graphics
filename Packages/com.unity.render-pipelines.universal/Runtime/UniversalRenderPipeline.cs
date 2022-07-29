@@ -499,13 +499,13 @@ namespace UnityEngine.Rendering.Universal
 
                         // Checking if the base and the overlay camera is of the same renderer type.
                         var currCameraRendererType = data?.scriptableRenderer.GetType();
-                        if (currCameraRendererType != baseCameraRendererType)
+                        /*if (currCameraRendererType != baseCameraRendererType)
                         {
                             Debug.LogWarning("Only cameras with compatible renderer types can be stacked. " +
                                              $"The camera: {currCamera.name} are using the renderer {currCameraRendererType.Name}, " +
                                              $"but the base camera: {baseCamera.name} are using {baseCameraRendererType.Name}. Will skip rendering");
                             continue;
-                        }
+                        }*/
 
                         var overlayRenderer = data.scriptableRenderer;
                         // Checking if they are the same renderer type but just not supporting Overlay
