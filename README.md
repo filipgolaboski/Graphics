@@ -1,3 +1,11 @@
+### FORK NOTES: THIS IS A HACK AND EXPERIMENTAL AND MIGHT BREAK, USE AT YOUR OWN RISK
+
+##Basically this fork is because Unity won't fix [this](https://issuetracker.unity3d.com/issues/urp-attempting-to-get-camera-relative-temporary-rendertexture-is-thrown-when-stacking-camera-with-different-renderers) even though this feature worked in version 2021.1 and it's a regression. I removed the checks for the different renderer types in the Universal renderer pipeline and fixed an issue with improper casting in the 2D renderer. The universal renderer still doesn't work as an overlay camera so always use the Universal renderer as a renderer in the base camera and either of both renderers in the overlay camera. Current branches that this works in is the 2022.1/staging branch and the master branch.
+
+### WARNING this is not a good general solution it's just a quick fix. As Unity ~~breaks~~ changes stuff in the URP this might not work in later versions.
+
+
+
 ## NOTE: We have migrated reported issues to FogBugz. You can only log further issues via the Unity bug tracker. To see how, read [this](https://unity3d.com/unity/qa/bug-reporting).
 
 ## NOTE 2: We are rolling out changes to how we develop the Graphics Packages. Development will move to an internal repo and changes will be mirrored to this public repo. You will continue to see changes at the PR level and pull in changes from this public repo. You can find more information and track our progress [here](https://forum.unity.com/threads/important-upcoming-changes-to-the-graphics-repository.1239826/).
